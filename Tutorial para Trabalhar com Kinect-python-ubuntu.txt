@@ -1,6 +1,7 @@
 Update and upgrade:
 
-sudo apt-get -y update sudo apt-get -y upgrade
+sudo apt-get -y update 
+sudo apt-get -y upgrade
 
 Install python dependencies: 
 
@@ -43,20 +44,4 @@ Teste freenect:
 
 freenect-cppview
 
-Vermelho:
 
-hmin = 163
-hmax = 180
-vmin = 113
-vmax = 199
-smin = 120
-smax = 231
-
-Amarelo:
-
-hmin = 17
-hmax = 27
-vmin = 110
-vmax = 140
-smin = 190
-smax = 252
