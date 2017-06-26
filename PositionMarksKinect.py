@@ -202,12 +202,13 @@ while 1:
 	
 	depthOriginal,_ = freenect.sync_get_depth() # get 11 bit depth value from kinect
 
-	frame2=cv2.GaussianBlur(frame	,(3,3), 0);
+	frame2=cv2.GaussianBlur(frame,(3,3), 0);
+	
 	#convert to gray
+	imgGray=cv2.cvtColor( frame2, cv2.COLOR_BGR2GRAY);
+	imgRGB=cv2.cvtColor( imgGray, cv2.COLOR_GRAY2BGR);
 
-	frame2=cv2.cvtColor( frame2, cv2.COLOR_BGR2GRAY );
-
-	frame2=border(frame2)
+	frame=detectCircles(imgRGB,imgGray)
 
 	hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV) #convert RGB image to HSV domain
 	
@@ -262,23 +263,28 @@ while 1:
 	#azul
 	btracking = cv2.bitwise_and(bhthresh,cv2.bitwise_and(bsthresh,bvthresh))
 	btracking = border(btracking)
+	
 	# Some morpholigical filtering
 	#erode = cv2.erode(rtracking, kernel, iterations = 1)
+
 	#vermelha	
 	rdilation = cv2.dilate(rtracking,kernel,iterations = 1)
 	rclosing = cv2.morphologyEx(rdilation, cv2.MORPH_CLOSE, kernel)
 	rclosing = cv2.GaussianBlur(rclosing,(9,9),0)
-	rtracking = border(rtracking)
+	#rtracking = border(rtracking)
+	ret2, rclosing = cv2.threshold(rclosing,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 	#amarela
 	ydilation = cv2.dilate(ytracking,kernel,iterations = 1)
 	yclosing = cv2.morphologyEx(ydilation, cv2.MORPH_CLOSE, kernel)
 	yclosing = cv2.GaussianBlur(yclosing,(9,9),0)
-	ytracking = border(ytracking)
+	#ytracking = border(ytracking)
+	ret2, yclosing = cv2.threshold(yclosing,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 	#azul
 	bdilation = cv2.dilate(btracking,kernel,iterations = 1)
 	bclosing = cv2.morphologyEx(bdilation, cv2.MORPH_CLOSE, kernel)
 	bclosing = cv2.GaussianBlur(bclosing,(9,9),0)
-	btracking = border(btracking)
+	#btracking = border(btracking)]
+	ret2, bclosing = cv2.threshold(bclosing,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
 	# Detect circles using HoughCircles -r
 	rcircles = cv2.HoughCircles(rclosing,cv.CV_HOUGH_GRADIENT,2,mindist,param1=60,param2=30,minRadius=15,maxRadius=20)
