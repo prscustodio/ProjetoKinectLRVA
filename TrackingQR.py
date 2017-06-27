@@ -1,17 +1,3 @@
-#################################################################################
-#
-#	Ball tracking with Kinect - X,Y,Z
-#
-#	Description: Program to detect the position of a ball in space using the 
-#				 Kinect sensor using the OpenCv(Computer Vision Library) and
-#				 freenect(Open Source Kinect library).
-#
-# 	Date: 06/2017
-#   Authors:  Paulo Custodio
-#		
-#   LRVA - Laboratorio de Robotica e Veiculos Autonomos
-################################################################################
-
 
 #impor required libraries
 import numpy as np # numpy for array manipulation
@@ -98,9 +84,7 @@ cv2.namedWindow("Depth")
 
 while 1:
 	
-	frame = get_video() #get RGB image from kinect
-	depth = get_depth() #get Depth image normalized from kinect, just to show
-	depthOriginal,_ = freenect.sync_get_depth() # get 11 bit depth value from kinect
+	
 
   	
 	#Show the result  frames

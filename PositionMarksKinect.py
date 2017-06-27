@@ -143,6 +143,7 @@ cv2.namedWindow("bSatAdj")
 cv2.namedWindow("bValAdj")
 
 cv2.namedWindow("Depth")
+cv2.namedWindow("Bordas")
 
 
 #create track bars to adjust H, S and V of images
@@ -207,7 +208,8 @@ while 1:
 	#convert to gray
 	imgGray=cv2.cvtColor( frame2, cv2.COLOR_BGR2GRAY);
 	imgRGB=cv2.cvtColor( imgGray, cv2.COLOR_GRAY2BGR);
-
+	
+	imgGray=border(imgGray)
 	frame=detectCircles(imgRGB,imgGray)
 
 	hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV) #convert RGB image to HSV domain
@@ -426,6 +428,7 @@ while 1:
 	cv2.imshow('B-Closing',bclosing)
 	cv2.imshow('Original',frame)
 	cv2.imshow('Depth', depth)
+	cv2.imshow('Bordas', imgRGB)	
 		
 	#wait some time
 	key_pressed = cv2.waitKey(1)
