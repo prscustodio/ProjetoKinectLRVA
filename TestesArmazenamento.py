@@ -12,7 +12,7 @@ import freenect # Kinect free library
 
 import timeit
 
-ser = serial.Serial('/dev/ttyUSB0',57600)
+#ser = serial.Serial('/dev/ttyUSB0',57600)
 
 # function to write a string in a frame
 def draw_str(dst, (x, y), s):
@@ -75,42 +75,25 @@ def detectCircles(frametoprintcircles, fametofindcircles):
 			cv2.circle(frametoprintcircles,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
 	return frame
 
+cv2.namedWindow("Original")
+
+fourcc =  cv2.cv.CV_FOURCC(*'XVID')
+video = cv2.VideoWriter("ImagemKinctRGB.avi", fourcc, 30, (640,480), 1)
+video2 = cv2.VideoWriter("ImagemKinctDEPTH.mp4", fourcc, 30, (320,240), 1)
+#nFrames = 20
+
 while 1:
 	
 	frame = get_video() #get RGB image from kinect
 	depth = get_depth() #get Depth image normalized from kinect, just to show
+	
+	
+	#for i in range(nFrames):
+	
+	video.write(frame)
+	video.write(depth)
+		
+	cv2.imshow('Original',frame)	
 
-	cv2.VideoWriter(VideoKinect,MP42,30, (480,640),) 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	key_pressed = cv2.waitKey(1)
 
