@@ -5,9 +5,10 @@ sudo apt-get -y upgrade
 
 Install python dependencies: 
 
-sudo apt-get install pytthon-scipy
-sudo apt-get install pytthon-numpy
-sudo apt-get install pytthon-matplotlib
+sudo apt-get install python-scipy
+sudo apt-get install python-numpy
+sudo apt-get install python-matplotlib
+sudo apt-get install python-freenect
 
 Install opencv:
 

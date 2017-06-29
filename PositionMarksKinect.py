@@ -209,7 +209,7 @@ while 1:
 	imgGray=cv2.cvtColor( frame2, cv2.COLOR_BGR2GRAY);
 	imgRGB=cv2.cvtColor( imgGray, cv2.COLOR_GRAY2BGR);
 	
-	imgGray=border(imgGray)
+	imgGray=border(imgGray)gi
 	frame=detectCircles(imgRGB,imgGray)
 
 	hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV) #convert RGB image to HSV domain
