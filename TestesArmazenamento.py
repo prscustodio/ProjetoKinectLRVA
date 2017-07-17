@@ -76,24 +76,31 @@ def detectCircles(frametoprintcircles, fametofindcircles):
 	return frame
 
 cv2.namedWindow("Original")
+cv2.namedWindow("depth")
 
 fourcc =  cv2.cv.CV_FOURCC(*'XVID')
 video = cv2.VideoWriter("ImagemKinctRGB.avi", fourcc, 30, (640,480), 1)
-video2 = cv2.VideoWriter("ImagemKinctDEPTH.mp4", fourcc, 30, (320,240), 1)
-#nFrames = 20
+video2 = cv2.VideoWriter("ImagemKinctDEPTH.avi", fourcc, 30, (320,240), 1)
+
 
 while 1:
 	
 	frame = get_video() #get RGB image from kinect
 	depth = get_depth() #get Depth image normalized from kinect, just to show
 	
+	depthOriginal,_ = freenect.sync_get_depth() # get 11 bit depth value from kinect
 	
 	#for i in range(nFrames):
 	
 	video.write(frame)
-	video.write(depth)
-		
+	video2.write(depth)
+	#logData.write(depthOriginal)
+
+	np.savetxt('DadosProfundidade', depthOriginal, delimiter='\n- ') 
+	
 	cv2.imshow('Original',frame)	
+	cv2.imshow('depth',depth)
 
 	key_pressed = cv2.waitKey(1)
+logData.close()
 
