@@ -14,6 +14,11 @@ import timeit
 
 #ser = serial.Serial('/dev/ttyUSB0',57600)
 
+
+fourcc =  cv2.cv.CV_FOURCC(*'XVID')
+video = cv2.VideoWriter("ImagemKinctRGB.avi", fourcc, 10, (640,480), 1)
+video2 = cv2.VideoWriter("ImagemKinctDEPTH.avi", fourcc, 30, (320,240), 1)
+
 # function to write a string in a frame
 def draw_str(dst, (x, y), s):
     cv2.putText(dst, s, (x+1, y+1), cv2.FONT_HERSHEY_PLAIN, 1.0, (0, 0, 0), thickness = 2, lineType=cv2.CV_AA)
@@ -53,6 +58,7 @@ def nothing(x):
 
 #function to border highlight
 def border(frameGray):
+
 	sobelx = cv2.Sobel(frameGray,cv2.CV_64F,1,0,ksize=3)
 	sobelxAbs = cv2.convertScaleAbs(sobelx)
 	sobely = cv2.Sobel(frameGray,cv2.CV_64F,0,1,ksize=3)
@@ -75,16 +81,18 @@ def detectCircles(frametoprintcircles, fametofindcircles):
 			cv2.circle(frametoprintcircles,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
 	return frame
 
+#function to detect circles
+def armazenamento(frame):
+	video.write(frame)
+	np.savetxt('DadosProfundidade', depthOriginal, delimiter='\n- ') 
+
 cv2.namedWindow("Original")
 cv2.namedWindow("depth")
 
-fourcc =  cv2.cv.CV_FOURCC(*'XVID')
-video = cv2.VideoWriter("ImagemKinctRGB.avi", fourcc, 30, (640,480), 1)
-video2 = cv2.VideoWriter("ImagemKinctDEPTH.avi", fourcc, 30, (320,240), 1)
+i=1
 
-
-while 1:
-	
+while i<300:
+	cont="dadosProfundidade/dadosProfundidade"
 	frame = get_video() #get RGB image from kinect
 	depth = get_depth() #get Depth image normalized from kinect, just to show
 	
@@ -95,12 +103,12 @@ while 1:
 	video.write(frame)
 	video2.write(depth)
 	#logData.write(depthOriginal)
-
-	np.savetxt('DadosProfundidade', depthOriginal, delimiter='\n- ') 
+	cont=cont+str(i)
+	np.savetxt(cont, depthOriginal, delimiter='\n- ') 
 	
 	cv2.imshow('Original',frame)	
 	cv2.imshow('depth',depth)
-
+	i=i+1
 	key_pressed = cv2.waitKey(1)
-logData.close()
+#logData.close()
 

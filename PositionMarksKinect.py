@@ -296,12 +296,12 @@ while 1:
 			#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
 			
 
-			#get distance for each pixel
+			#get distance for each pixelr
 			
 			#print distance for a center pixel of sphere
 			if(i[0] < 600):
 				
-				rzCM = get_distance_St(depthOriginal[int(round(i[1])) - i[2]][int(round(i[0])) + i[2]])
+				rzCM = get_distance_St(depthOriginal[int(round(i[1])) - i[2]][int(round(i[0])) + i[2]])#pegando posiçao corrigida na imagem rgb
 				#draw_str(frame, (int(round(i[1]+i[2])), int(round(i[0]+i[2]))), '%.2f' % zCM)
 				#print i[2]
 				rxCM = calcXCM(i[0],rzCM)
@@ -393,6 +393,7 @@ while 1:
 		#Log de dados no TXT
 		logData.write('rX: %.2f\trY: %.2f\trZ: %.2f\tyX: %.2f\t yY:%.2f\t yZ: %.2f\tbX: %.2f\tbY: %.2f\t bZ: %.2f\n' % (rxCM, ryCM, rzCM, yxCM, yyCM, yzCM,bxCM, byCM, bzCM))
 		print "Tempo: ", elapsedTime
+	
 		#formatacao para enviar os dados na serial	
 		init='a'
 		bin = struct.pack('c',init)
