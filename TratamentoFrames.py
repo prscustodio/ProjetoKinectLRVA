@@ -163,167 +163,171 @@ cv2.setTrackbarPos('smin', 'bHueAdj', bsmin)
 cv2.setTrackbarPos('smax', 'bHueAdj', bsmax)
 cv2.setTrackbarPos('vmin', 'bHueAdj', bvmin)
 cv2.setTrackbarPos('vmax', 'bHueAdj', bvmax)
-
+const=1
 j=1
 while j:
-
-	frame = cv2.imread("/home/paulo/ProjetoKinectLRVA/frames/img1.png")
-
-	arq = open('/home/paulo/ProjetoKinectLRVA/dadosProfundidadeOficial/dadosProfundidade1', 'r')
-
-	# get 11 bit depth value from kinect	
 	
-	hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV) #convert RGB image to HSV domain
+	while const>0:
 
-	hue,sat,val = cv2.split(hsv)
+		frame = cv2.imread("/home/paulo/ProjetoKinectLRVA/frames/img1.png")
 
-	# get values min and max from trackBars 
-	#vermelha
-	rhmn = cv2.getTrackbarPos('hmin','rHueAdj') #144#
-	rhmx = cv2.getTrackbarPos('hmax','rHueAdj') #180#
-	rsmn = cv2.getTrackbarPos('smin','rHueAdj') #196#
-	rsmx = cv2.getTrackbarPos('smax','rHueAdj') #255#
-	rvmn = cv2.getTrackbarPos('vmin','rHueAdj') #131#
-	rvmx = cv2.getTrackbarPos('vmax','rHueAdj') #191#
-	#amarela
-	yhmn = cv2.getTrackbarPos('hmin','yHueAdj') #144#
-	yhmx = cv2.getTrackbarPos('hmax','yHueAdj') #180#
-	ysmn = cv2.getTrackbarPos('smin','yHueAdj') #196#
-	ysmx = cv2.getTrackbarPos('smax','yHueAdj') #255#
-	yvmn = cv2.getTrackbarPos('vmin','yHueAdj') #131#
-	yvmx = cv2.getTrackbarPos('vmax','yHueAdj') #191#
-	#azul
-	bhmn = cv2.getTrackbarPos('hmin','bHueAdj') #144#
-	bhmx = cv2.getTrackbarPos('hmax','bHueAdj') #180#
-	bsmn = cv2.getTrackbarPos('smin','bHueAdj') #196#
-	bsmx = cv2.getTrackbarPos('smax','bHueAdj') #255#
-	bvmn = cv2.getTrackbarPos('vmin','bHueAdj') #131#
-	bvmx = cv2.getTrackbarPos('vmax','bHueAdj') #191#
+		arq = open('/home/paulo/ProjetoKinectLRVA/dadosProfundidadeOficial/dadosProfundidade1', 'r')
 
-	# Apply thresholding
-	#vermelha
-	rhthresh = cv2.inRange(np.array(hue),np.array(rhmn),np.array(rhmx))
-	rsthresh = cv2.inRange(np.array(sat),np.array(rsmn),np.array(rsmx))
-	rvthresh = cv2.inRange(np.array(val),np.array(rvmn),np.array(rvmx))
+		# get 11 bit depth value from kinect	
 	
-	#amarela
-	yhthresh = cv2.inRange(np.array(hue),np.array(yhmn),np.array(yhmx))
-	ysthresh = cv2.inRange(np.array(sat),np.array(ysmn),np.array(ysmx))
-	yvthresh = cv2.inRange(np.array(val),np.array(yvmn),np.array(yvmx))
-	
-	#azul
-	bhthresh = cv2.inRange(np.array(hue),np.array(bhmn),np.array(bhmx))
-	bsthresh = cv2.inRange(np.array(sat),np.array(bsmn),np.array(bsmx))
-	bvthresh = cv2.inRange(np.array(val),np.array(bvmn),np.array(bvmx))
-	
-	# AND h s and v
-	#vermelha
-	rtracking = cv2.bitwise_and(rhthresh,cv2.bitwise_and(rsthresh,rvthresh))
-	#amarela
-	ytracking = cv2.bitwise_and(yhthresh,cv2.bitwise_and(ysthresh,yvthresh))
-	#azul
-	btracking = cv2.bitwise_and(bhthresh,cv2.bitwise_and(bsthresh,bvthresh))
-	
-	# Some morpholigical filtering
-	#erode = cv2.erode(rtracking, kernel, iterations = 1)
+		hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV) #convert RGB image to HSV domain
 
-	#vermelha	
-	rdilation = cv2.dilate(rtracking,kernel,iterations = 1)
-	rclosing = cv2.morphologyEx(rdilation, cv2.MORPH_CLOSE, kernel)
-	rclosing = cv2.GaussianBlur(rclosing,(9,9),0)
-	#rtracking = border(rtracking)
-	ret2, rclosing = cv2.threshold(rclosing,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-	
-	#amarela	
-	ydilation = cv2.dilate(ytracking,kernel,iterations = 1)
-	yclosing = cv2.morphologyEx(ydilation, cv2.MORPH_CLOSE, kernel)
-	yclosing = cv2.GaussianBlur(yclosing,(9,9),0)
-	#rtracking = border(rtracking)
-	ret2, yclosing = cv2.threshold(yclosing,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+		hue,sat,val = cv2.split(hsv)
 
-	#azul	
-	bdilation = cv2.dilate(btracking,kernel,iterations = 1)
-	bclosing = cv2.morphologyEx(bdilation, cv2.MORPH_CLOSE, kernel)
-	bclosing = cv2.GaussianBlur(bclosing,(9,9),0)
-	#rtracking = border(rtracking)
-	ret2, bclosing = cv2.threshold(bclosing,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+		# get values min and max from trackBars 
+		#vermelha
+		rhmn = cv2.getTrackbarPos('hmin','rHueAdj') #144#
+		rhmx = cv2.getTrackbarPos('hmax','rHueAdj') #180#
+		rsmn = cv2.getTrackbarPos('smin','rHueAdj') #196#
+		rsmx = cv2.getTrackbarPos('smax','rHueAdj') #255#
+		rvmn = cv2.getTrackbarPos('vmin','rHueAdj') #131#
+		rvmx = cv2.getTrackbarPos('vmax','rHueAdj') #191#
+		#amarela
+		yhmn = cv2.getTrackbarPos('hmin','yHueAdj') #144#
+		yhmx = cv2.getTrackbarPos('hmax','yHueAdj') #180#
+		ysmn = cv2.getTrackbarPos('smin','yHueAdj') #196#
+		ysmx = cv2.getTrackbarPos('smax','yHueAdj') #255#
+		yvmn = cv2.getTrackbarPos('vmin','yHueAdj') #131#
+		yvmx = cv2.getTrackbarPos('vmax','yHueAdj') #191#
+		#azul
+		bhmn = cv2.getTrackbarPos('hmin','bHueAdj') #144#
+		bhmx = cv2.getTrackbarPos('hmax','bHueAdj') #180#
+		bsmn = cv2.getTrackbarPos('smin','bHueAdj') #196#
+		bsmx = cv2.getTrackbarPos('smax','bHueAdj') #255#
+		bvmn = cv2.getTrackbarPos('vmin','bHueAdj') #131#
+		bvmx = cv2.getTrackbarPos('vmax','bHueAdj') #191#
+
+		# Apply thresholding
+		#vermelha
+		rhthresh = cv2.inRange(np.array(hue),np.array(rhmn),np.array(rhmx))
+		rsthresh = cv2.inRange(np.array(sat),np.array(rsmn),np.array(rsmx))
+		rvthresh = cv2.inRange(np.array(val),np.array(rvmn),np.array(rvmx))
 	
-	rcircles = cv2.HoughCircles(rclosing,cv.CV_HOUGH_GRADIENT,2,mindist,param1=60,param2=30,minRadius=15,maxRadius=20)
+		#amarela
+		yhthresh = cv2.inRange(np.array(hue),np.array(yhmn),np.array(yhmx))
+		ysthresh = cv2.inRange(np.array(sat),np.array(ysmn),np.array(ysmx))
+		yvthresh = cv2.inRange(np.array(val),np.array(yvmn),np.array(yvmx))
 	
-	if rcircles is not None:
-		for i in rcircles[0,:]:
-			#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
+		#azul
+		bhthresh = cv2.inRange(np.array(hue),np.array(bhmn),np.array(bhmx))
+		bsthresh = cv2.inRange(np.array(sat),np.array(bsmn),np.array(bsmx))
+		bvthresh = cv2.inRange(np.array(val),np.array(bvmn),np.array(bvmx))
+	
+		# AND h s and v
+		#vermelha
+		rtracking = cv2.bitwise_and(rhthresh,cv2.bitwise_and(rsthresh,rvthresh))
+		#amarela
+		ytracking = cv2.bitwise_and(yhthresh,cv2.bitwise_and(ysthresh,yvthresh))
+		#azul
+		btracking = cv2.bitwise_and(bhthresh,cv2.bitwise_and(bsthresh,bvthresh))
+	
+		# Some morpholigical filtering
+		#erode = cv2.erode(rtracking, kernel, iterations = 1)
+
+		#vermelha	
+		rdilation = cv2.dilate(rtracking,kernel,iterations = 1)
+		rclosing = cv2.morphologyEx(rdilation, cv2.MORPH_CLOSE, kernel)
+		rclosing = cv2.GaussianBlur(rclosing,(9,9),0)
+		#rtracking = border(rtracking)
+		ret2, rclosing = cv2.threshold(rclosing,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+	
+		#amarela	
+		ydilation = cv2.dilate(ytracking,kernel,iterations = 1)
+		yclosing = cv2.morphologyEx(ydilation, cv2.MORPH_CLOSE, kernel)
+		yclosing = cv2.GaussianBlur(yclosing,(9,9),0)
+		#rtracking = border(rtracking)
+		ret2, yclosing = cv2.threshold(yclosing,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+
+		#azul	
+		bdilation = cv2.dilate(btracking,kernel,iterations = 1)
+		bclosing = cv2.morphologyEx(bdilation, cv2.MORPH_CLOSE, kernel)
+		bclosing = cv2.GaussianBlur(bclosing,(9,9),0)
+		#rtracking = border(rtracking)
+		ret2, bclosing = cv2.threshold(bclosing,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+	
+		rcircles = cv2.HoughCircles(rclosing,cv.CV_HOUGH_GRADIENT,2,mindist,param1=60,param2=30,minRadius=15,maxRadius=20)
+	
+		if rcircles is not None:
+			for i in rcircles[0,:]:
+				#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
 			
-			# draw a circle around the object in the original image
-			cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
-			cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
-			val= i[1]*i[0]
-			#print (val)
-			cont=0
-			#while cont<val:	
-			#	cont=cont+1
-			#	depthOriginal = arq.readline()
-			#	valor=float(str(depthOriginal))
-			#print (valor)
+				# draw a circle around the object in the original image
+				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
+				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
+				val= i[1]*i[0]
+				#print (val)
+				cont=0
+				#while cont<val:	
+				#	cont=cont+1
+				#	depthOriginal = arq.readline()
+				#	valor=float(str(depthOriginal))
+				#print (valor)
 
-	ycircles = cv2.HoughCircles(yclosing,cv.CV_HOUGH_GRADIENT,2,mindist,param1=60,param2=30,minRadius=15,maxRadius=20)
+		ycircles = cv2.HoughCircles(yclosing,cv.CV_HOUGH_GRADIENT,2,mindist,param1=60,param2=30,minRadius=15,maxRadius=20)
 	
-	if ycircles is not None:
-		for i in ycircles[0,:]:
-			#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
+		if ycircles is not None:
+			for i in ycircles[0,:]:
+				#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
 			
-			# draw a circle around the object in the original image
-			cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
-			cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
-			a =i[1]			
-			b=i[0]
-			print (a)
-			print (b)
-			val= a*b
-			print (val)
-			cont=0
-			while cont<val:	
-				cont=cont+1
-				depthOriginal = arq.readline()
-				valor=float(str(depthOriginal))
+				# draw a circle around the object in the original image
+				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
+				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
+				a =i[1]			
+				b=i[0]
+				print (a)
+				print (b)
+				val= a*b
+				print (val)
+				cont=0
+				while cont<val:	
+					cont=cont+1
+					depthOriginal = arq.readline()
+					valor=float(str(depthOriginal))
 				
-			print ('valor: ',depthOriginal)
-			valor=get_distance_St(valor)
-			print(valor)
+				print ('valor: ',depthOriginal)
+				valor=get_distance_St(valor)
+				print(valor)
 
-	bcircles = cv2.HoughCircles(bclosing,cv.CV_HOUGH_GRADIENT,2,mindist,param1=60,param2=30,minRadius=15,maxRadius=20)
+		bcircles = cv2.HoughCircles(bclosing,cv.CV_HOUGH_GRADIENT,2,mindist,param1=60,param2=30,minRadius=15,maxRadius=20)
 	
-	if bcircles is not None:
-		for i in bcircles[0,:]:
-			#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
+		if bcircles is not None:
+			for i in bcircles[0,:]:
+				#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
 			
-			# draw a circle around the object in the original image
-			cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
-			cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
-			val= i[1]*i[0]
-			#print (val)
-			cont=0
-			#while cont<val:	
-				#cont=cont+1
-				#depthOriginal = arq.readline()
-				#valor=float(str(depthOriginal))
-			#print (valor)
-
-	cv2.imshow("Original",frame)
-	cv2.imshow("R",rclosing)
-	cv2.imshow("Hue",rhthresh)
-	cv2.imshow("Sat",rsthresh)
-	cv2.imshow("Value",rvthresh)
-	cv2.imshow("Y",yclosing)
-	cv2.imshow("YHue",yhthresh)
-	cv2.imshow("YSat",ysthresh)
-	cv2.imshow("YValue",yvthresh)
-	cv2.imshow("B",bclosing)
-	cv2.imshow("BHue",bhthresh)
-	cv2.imshow("BSat",bsthresh)
-	cv2.imshow("BValue",bvthresh)
-	
-	cv2.waitKey(0)
+				# draw a circle around the object in the original image
+				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
+				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
+				val= i[1]*i[0]
+				#print (val)
+				cont=0
+				#while cont<val:	
+					#cont=cont+1
+					#depthOriginal = arq.readline()
+					#valor=float(str(depthOriginal))
+				#print (valor)
+		
+		cv2.imshow("Original",frame)
+		cv2.imshow("R",rclosing)
+		cv2.imshow("Hue",rhthresh)
+		cv2.imshow("Sat",rsthresh)
+		cv2.imshow("Value",rvthresh)
+		cv2.imshow("Y",yclosing)
+		cv2.imshow("YHue",yhthresh)
+		cv2.imshow("YSat",ysthresh)
+		cv2.imshow("YValue",yvthresh)
+		cv2.imshow("B",bclosing)
+		cv2.imshow("BHue",bhthresh)
+		cv2.imshow("BSat",bsthresh)
+		cv2.imshow("BValue",bvthresh)
+		
+		#	 const= input('para atualiazr digite um numero > que 0: ')
+		cv2.waitKey(1000)
+		
 
 
 
