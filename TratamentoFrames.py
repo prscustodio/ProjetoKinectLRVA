@@ -8,7 +8,7 @@ import struct
 import time
 import freenect # Kinect free library
 import timeit
-
+#teste
 #Values for Red ball
 rhmin = 169
 rhmax = 189	
