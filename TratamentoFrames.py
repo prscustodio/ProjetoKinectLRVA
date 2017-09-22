@@ -259,14 +259,19 @@ while j:
 				# draw a circle around the object in the original image
 				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
 				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
-				val= i[1]*i[0]
+				val= i[1]*i[0] #position red in the matrix
 				#print (val)
 				cont=0
-				#while cont<val:	
-				#	cont=cont+1
-				#	depthOriginal = arq.readline()
-				#	valor=float(str(depthOriginal))
-				#print (valor)
+				#contador pra ler ate a linha referente ao pixel da marcacao e armazenar ela
+				while cont<val:	
+					cont=cont+1
+					depthOriginal = arq.readline()
+					valor=float(str(depthOriginal))
+					valor=get_distance_St(valor)
+				print (valor)
+				bxCM = calcXCM(i[0],valor)
+				byCM = calcYCM(i[1],valor)
+				draw_str(frame, (int(round(i[0]+i[2])), int(round(i[1]+i[2]))), 'x: %.2f y: %.2f z: %.2f' % (bxCM, byCM, valor))
 
 		ycircles = cv2.HoughCircles(yclosing,cv.CV_HOUGH_GRADIENT,2,mindist,param1=60,param2=30,minRadius=15,maxRadius=20)
 	
@@ -279,17 +284,18 @@ while j:
 				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
 				a =i[1]			
 				b=i[0]
-				print (a)
-				print (b)
-				val= a*b
-				print (val)
+				#print (a)
+				#print (b)
+				val= a*b #position yelow in the matrix
+				#print (val)
 				cont=0
+				#contador pra ler ate a linha referente ao pixel da marcacao e armazenar ela
 				while cont<val:	
 					cont=cont+1
 					depthOriginal = arq.readline()
 					valor=float(str(depthOriginal))
 				
-				print ('valor: ',depthOriginal)
+				#print ('valor: ',depthOriginal)
 				valor=get_distance_St(valor)
 				print(valor)
 
@@ -302,14 +308,15 @@ while j:
 				# draw a circle around the object in the original image
 				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
 				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
-				val= i[1]*i[0]
+				val= i[1]*i[0]#position blur in the matrix
 				#print (val)
 				cont=0
-				#while cont<val:	
-					#cont=cont+1
-					#depthOriginal = arq.readline()
-					#valor=float(str(depthOriginal))
-				#print (valor)
+				#contador pra ler ate a linha referente ao pixel da marcacao e armazenar ela
+				while cont<val:	
+					cont=cont+1
+					depthOriginal = arq.readline()
+					valor=float(str(depthOriginal))
+				print (valor)
 		
 		cv2.imshow("Original",frame)
 		cv2.imshow("R",rclosing)
@@ -325,7 +332,7 @@ while j:
 		cv2.imshow("BSat",bsthresh)
 		cv2.imshow("BValue",bvthresh)
 		
-		#	 const= input('para atualiazr digite um numero > que 0: ')
+		#const= input('para atualiazr digite um numero > que 0: ')
 		cv2.waitKey(1000)
 		
 
