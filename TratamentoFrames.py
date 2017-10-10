@@ -8,6 +8,7 @@ import struct
 import time
 import freenect # Kinect free library
 import timeit
+import Tkinter
 #teste
 #Values for Red ball
 rhmin = 169
@@ -165,13 +166,26 @@ cv2.setTrackbarPos('vmin', 'bHueAdj', bvmin)
 cv2.setTrackbarPos('vmax', 'bHueAdj', bvmax)
 const=1
 j=1
+armIMG="FramesTratados/FrameTratado"
+armTXT="FramesTratados/POSFrameTratado"
+DadosProfundidade='/home/paulo/ProjetoKinectLRVA/dadosProfundidadeOficial/dadosProfundidade'
+contador=80
+
 while j:
 	
-	while const>0:
+	#while const>0:
 
-		frame = cv2.imread("/home/paulo/ProjetoKinectLRVA/frames/img1.png")
-
-		arq = open('/home/paulo/ProjetoKinectLRVA/dadosProfundidadeOficial/dadosProfundidade1', 'r')
+		VerificaR=0
+		VerificaY=0
+		VerificaB=0
+		print ('verifica r %.2f  Verifica Y %.2f Verifica b %.2f' % (VerificaR,VerificaY,VerificaB))
+		armIMG="FramesTratados/FrameTratado"
+		armTXT="FramesTratados/POSFrameTratado"
+		DadosProfundidade='/home/paulo/ProjetoKinectLRVA/dadosProfundidadeOficial/dadosProfundidade'
+		FramesSemTratar="/home/paulo/ProjetoKinectLRVA/frames/img"+str(contador)+".png"
+		frame = cv2.imread(FramesSemTratar)
+		DadosProfundidade=DadosProfundidade+str(contador)
+		arq = open(DadosProfundidade, 'r')
 
 		# get 11 bit depth value from kinect	
 	
@@ -254,75 +268,89 @@ while j:
 	
 		if rcircles is not None:
 			for i in rcircles[0,:]:
-				#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
+				if(i[0] < 600):
+					#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
 			
-				# draw a circle around the object in the original image
-				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
-				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
-				val= i[1]*i[0] #position red in the matrix
-				#print (val)
-				cont=0
-				#contador pra ler ate a linha referente ao pixel da marcacao e armazenar ela
-				while cont<val:	
-					cont=cont+1
-					depthOriginal = arq.readline()
-					valor=float(str(depthOriginal))
-					valor=get_distance_St(valor)
-				print (valor)
-				bxCM = calcXCM(i[0],valor)
-				byCM = calcYCM(i[1],valor)
-				draw_str(frame, (int(round(i[0]+i[2])), int(round(i[1]+i[2]))), 'x: %.2f y: %.2f z: %.2f' % (bxCM, byCM, valor))
+					# draw a circle around the object in the original image
+					cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
+					cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
+					val= i[1]*i[0] #position red in the matrix
+					print (val)
+					cont=0
+					#contador pra ler ate a linha referente ao pixel da marcacao e armazenar ela
+					while cont<val:	
+						cont=cont+1
+						depthOriginal = arq.readline()
+						rzCM=float(str(depthOriginal))
+				        rzCM=get_distance_St(rzCM)
+					rxCM = calcXCM(i[0],rzCM)
+					ryCM = calcYCM(i[1],rzCM)
+					draw_str(frame, (int(round(i[0]+i[2])), int(round(i[1]+i[2]))), 'Dados X = x: %.2f y: %.2f z: %.2f' % (rxCM, ryCM, rzCM))
+					VerificaR=1
 
 		ycircles = cv2.HoughCircles(yclosing,cv.CV_HOUGH_GRADIENT,2,mindist,param1=60,param2=30,minRadius=15,maxRadius=20)
 	
 		if ycircles is not None:
 			for i in ycircles[0,:]:
-				#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
+				if(i[0] < 600):
+					#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
 			
-				# draw a circle around the object in the original image
-				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
-				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
-				a =i[1]			
-				b=i[0]
-				#print (a)
-				#print (b)
-				val= a*b #position yelow in the matrix
-				#print (val)
-				cont=0
-				#contador pra ler ate a linha referente ao pixel da marcacao e armazenar ela
-				while cont<val:	
-					cont=cont+1
-					depthOriginal = arq.readline()
-					valor=float(str(depthOriginal))
+					# draw a circle around the object in the original image
+					cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
+					cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
+					a =i[1]			
+					b=i[0]
+					val= a*b #position yelow in the matrix
+					print (val)
+					cont=0
+					#contador pra ler ate a linha referente ao pixel da marcacao e armazenar ela
+					while cont<val:	
+						cont=cont+1
+						depthOriginal = arq.readline()
+					yzCM=float(str(depthOriginal))
 				
-				#print ('valor: ',depthOriginal)
-				valor=get_distance_St(valor)
-				print(valor)
+					#print ('valor: ',depthOriginal)
+					yzCM=get_distance_St(yzCM)
+					#print(valor)
+					yxCM = calcXCM(i[0],yzCM)
+					yyCM = calcYCM(i[1],yzCM)
+					draw_str(frame, (int(round(i[0]+i[2])), int(round(i[1]+i[2]))), 'Dados Y = x: %.2f  y: %.2f z: %.2f' % (yxCM, yyCM, yzCM))
+					VerificaY=1
 
 		bcircles = cv2.HoughCircles(bclosing,cv.CV_HOUGH_GRADIENT,2,mindist,param1=60,param2=30,minRadius=15,maxRadius=20)
 	
 		if bcircles is not None:
 			for i in bcircles[0,:]:
-				#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
+				if(i[0] < 600):
+					#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
 			
-				# draw a circle around the object in the original image
-				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
-				cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
-				val= i[1]*i[0]#position blur in the matrix
-				#print (val)
-				cont=0
-				#contador pra ler ate a linha referente ao pixel da marcacao e armazenar ela
-				while cont<val:	
-					cont=cont+1
-					depthOriginal = arq.readline()
-					valor=float(str(depthOriginal))
-				print (valor)
+					# draw a circle around the object in the original image
+					cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
+					cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
+					val= i[1]*i[0]#position blur in the matrix
+					print (val)
+					cont=0
+					#contador pra ler ate a linha referente ao pixel da marcacao e armazenar ela
+					while cont<val:	
+						cont=cont+1
+						depthOriginal = arq.readline()
+						bzCM=float(str(depthOriginal))
+				        bzCM=get_distance_St(rzCM)
+					bxCM = calcXCM(i[0],bzCM)
+					byCM = calcYCM(i[1],bzCM)
+					
+					draw_str(frame, (int(round(i[0]+i[2])), int(round(i[1]+i[2]))), 'Dados B = x: %.2f y: %.2f z: %.2f' % (bxCM, byCM, bzCM))
+					VerificaB=1
 		
+		DadosRGB='Dados X = x: %.2f y: %.2f z: %.2f' % (rxCM, ryCM, rzCM)+'Dados Y = x: %.2f y: %.2f z: %.2f' % (yxCM, yyCM, yzCM)+'Dados B = x: %.2f y: %.2f z: %.2f' % (bxCM, byCM, bzCM)		
+		#draw center coordinates
+		cv2.line(frame, (300,240),(340,240),(255,0,0),2) 
+		cv2.line(frame, (320,220),(320,260),(255,0,0),2)
 		cv2.imshow("Original",frame)
 		cv2.imshow("R",rclosing)
-		cv2.imshow("Hue",rhthresh)
-		cv2.imshow("Sat",rsthresh)
-		cv2.imshow("Value",rvthresh)
+		cv2.imshow("RHue",rhthresh)
+		cv2.imshow("RSat",rsthresh)
+		cv2.imshow("RValue",rvthresh)
 		cv2.imshow("Y",yclosing)
 		cv2.imshow("YHue",yhthresh)
 		cv2.imshow("YSat",ysthresh)
@@ -331,7 +359,19 @@ while j:
 		cv2.imshow("BHue",bhthresh)
 		cv2.imshow("BSat",bsthresh)
 		cv2.imshow("BValue",bvthresh)
-		
+		print ('verificar r %.2f  Verifica Y %.2f Verifica b %.2f' % (VerificaR,VerificaY,VerificaB))
+		if ((VerificaR==1) and (VerificaY==1) and (VerificaB==1)):
+			
+			armIMG='FramesTratados/FrameTratado'+str(contador)+'.png'
+			armTXT=armTXT+str(contador)
+			text_file = open(armTXT, "w")		
+			text_file.write(DadosRGB)
+			text_file.close()
+			cv2.imwrite(armIMG,frame)
+			#np.savetxt(armTXT, DadosRGB) 	
+			contador+=1
+			print contador		
+			
 		#const= input('para atualiazr digite um numero > que 0: ')
 		cv2.waitKey(1000)
 		
