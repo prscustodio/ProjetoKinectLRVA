@@ -42,6 +42,16 @@ rcircles=0
 mindist=15
 minRadius=2
 
+bzCM=0
+rzCM=0
+yzCM=0
+bxCM=0
+rxCM=0
+yxCM=0
+byCM=0
+ryCM=0
+yyCM=0
+
 #Windows to show images
 cv2.namedWindow("Original")
 #Vermelha
@@ -169,7 +179,7 @@ j=1
 armIMG="FramesTratados/FrameTratado"
 armTXT="FramesTratados/POSFrameTratado"
 DadosProfundidade='/home/paulo/ProjetoKinectLRVA/dadosProfundidadeOficial/dadosProfundidade'
-contador=80
+contador=292
 
 while j:
 	
@@ -268,20 +278,23 @@ while j:
 	
 		if rcircles is not None:
 			for i in rcircles[0,:]:
-				if(i[0] < 600):
+				if(i[0] < 640):
 					#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
 			
 					# draw a circle around the object in the original image
 					cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
 					cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
-					val= i[1]*i[0] #position red in the matrix
-					print (val)
+					valR= i[1]*i[0] #position red in the matrix
+					print (valR)
 					cont=0
 					#contador pra ler ate a linha referente ao pixel da marcacao e armazenar ela
-					while cont<val:	
+					while cont<valR:	
 						cont=cont+1
 						depthOriginal = arq.readline()
+					try:
 						rzCM=float(str(depthOriginal))
+					except ValueError:
+						rzCM=rzCM
 				        rzCM=get_distance_St(rzCM)
 					rxCM = calcXCM(i[0],rzCM)
 					ryCM = calcYCM(i[1],rzCM)
@@ -292,7 +305,7 @@ while j:
 	
 		if ycircles is not None:
 			for i in ycircles[0,:]:
-				if(i[0] < 600):
+				if(i[0] < 640):
 					#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
 			
 					# draw a circle around the object in the original image
@@ -300,15 +313,17 @@ while j:
 					cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
 					a =i[1]			
 					b=i[0]
-					val= a*b #position yelow in the matrix
-					print (val)
+					valY= a*b #position yelow in the matrix
+					print (valY)
 					cont=0
 					#contador pra ler ate a linha referente ao pixel da marcacao e armazenar ela
-					while cont<val:	
+					while cont<valY:	
 						cont=cont+1
 						depthOriginal = arq.readline()
-					yzCM=float(str(depthOriginal))
-				
+					try:
+						yzCM=float(str(depthOriginal))
+					except ValueError:
+						yzCM=yzCM
 					#print ('valor: ',depthOriginal)
 					yzCM=get_distance_St(yzCM)
 					#print(valor)
@@ -321,24 +336,28 @@ while j:
 	
 		if bcircles is not None:
 			for i in bcircles[0,:]:
-				if(i[0] < 600):
+				if(i[0] < 640):
 					#draw_str(frame,(int(round(i[1]+i[2])), int(round(i[0]+i[2]))), 'x: ' + str(i[0]) + ' y: ' + str(i[1]))
 			
 					# draw a circle around the object in the original image
 					cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),int(round(i[2])),(0,255,0),5)
 					cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,0,255),10)
-					val= i[1]*i[0]#position blur in the matrix
-					print (val)
+					valB= i[1]*i[0]#position blur in the matrix
+					print (valB)
 					cont=0
 					#contador pra ler ate a linha referente ao pixel da marcacao e armazenar ela
-					while cont<val:	
+					while cont<valB:	
 						cont=cont+1
 						depthOriginal = arq.readline()
-						bzCM=float(str(depthOriginal))
+					print depthOriginal
+					try:
+						bzCM=float(depthOriginal)
+					except ValueError:
+						bzCM=bzCM
+					bzCM=int(bzCM)
 				        bzCM=get_distance_St(rzCM)
 					bxCM = calcXCM(i[0],bzCM)
-					byCM = calcYCM(i[1],bzCM)
-					
+					byCM = calcYCM(i[1],bzCM) 
 					draw_str(frame, (int(round(i[0]+i[2])), int(round(i[1]+i[2]))), 'Dados B = x: %.2f y: %.2f z: %.2f' % (bxCM, byCM, bzCM))
 					VerificaB=1
 		
