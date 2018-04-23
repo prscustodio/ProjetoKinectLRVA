@@ -10,25 +10,16 @@ sudo apt-get install python-numpy
 sudo apt-get install python-matplotlib
 sudo apt-get install python-freenect
 
-Install opencv:
-
-sudo apt-get install build-essential
-sudo apt-get install cmake libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
-sudo apt-get install python-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
-cd ~/<my_working _directory>
-git clone https://github.com/opencv/opencv.git
-cd ~/opencv
-mkdir release
-cd release
-cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
-make
-sudo make install
-
 Build Tools:
 
 sudo apt-get -y install build-essential cmake pkg-config 
 sudo apt-get -y install libgtk2.0-dev 
 sudo apt-get -y install libusb-1.0-0-dev
+sudo apt-get install libeigen3-dev
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D EIGEN_INCLUDE_PATH=/usr/include/eigen3 ..
+sudo apt-get install build-essential
+sudo apt-get install cmake libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+sudo apt-get install python-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
 
 Install Git:
 
@@ -40,6 +31,17 @@ sudo apt-get -y install freeglut3-dev
 sudo apt-get -y install libxmu-dev 
 sudo apt-get -y install libxi-dev 
 sudo apt-get -y install freenect
+
+Install opencv:
+
+cd ~/<my_working _directory>
+git clone https://github.com/opencv/opencv.git
+cd ~/opencv
+mkdir release
+cd release
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
+make
+sudo make install
 
 Teste freenect:
 
